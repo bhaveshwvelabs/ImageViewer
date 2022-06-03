@@ -49,7 +49,10 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
    override func viewDidLoad() {
       super.viewDidLoad()
       let screenWidth = self.view.frame.width
-      let screenHeight = self.view.frame.height
+      var screenHeight = self.view.frame.height
+      if #available(iOS 11.0, *) {
+         screenHeight = self.view.frame.height - (self.view.safeAreaInsets.top + self.view.safeAreaInsets.bottom)
+      }
       layout.sectionInset = UIEdgeInsets(top: 50, left: 8, bottom: 8, right: 8)
       layout.itemSize = CGSize(width: screenWidth/3 - 8, height: screenWidth/3 - 8)
       layout.minimumInteritemSpacing = 4
