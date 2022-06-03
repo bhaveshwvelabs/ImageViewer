@@ -48,33 +48,41 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
 
    override func viewDidLoad() {
       super.viewDidLoad()
+          let topSafeArea: CGFloat
+          let bottomSafeArea: CGFloat
+          if #available(iOS 11.0, *) {
+              topSafeArea = view.safeAreaInsets.top
+              bottomSafeArea = view.safeAreaInsets.bottom
+          } else {
+              topSafeArea = topLayoutGuide.length
+              bottomSafeArea = bottomLayoutGuide.length
+          }
       let screenWidth = self.view.frame.width
-      var screenHeight = self.view.frame.height
-      if #available(iOS 11.0, *) {
-         screenHeight = self.view.frame.height - (self.view.safeAreaInsets.top + self.view.safeAreaInsets.bottom)
-      }
+      let screenHeight = self.view.frame.height - (topSafeArea + bottomSafeArea)
+
       layout.sectionInset = UIEdgeInsets(top: 50, left: 8, bottom: 8, right: 8)
       layout.itemSize = CGSize(width: screenWidth/3 - 8, height: screenWidth/3 - 8)
       layout.minimumInteritemSpacing = 4
       layout.minimumLineSpacing = 4
-      let viewCollBg = UIView(frame: CGRect(x: 0, y: 20, width: screenWidth, height: self.view.frame.height))
-      collView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight - (20 + 40)), collectionViewLayout: layout)
+   
+      let viewCollBg = UIView(frame: CGRect(x: 0, y: topSafeArea + 20, width: screenWidth, height: self.view.frame.height - topSafeArea))
+      collView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight - 20), collectionViewLayout: layout)
       collView?.delegate = self
       collView?.dataSource = self
-      let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight - (20 + 40)), byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 40, height: 40))
+      let path = UIBezierPath(roundedRect: viewCollBg.frame, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 40, height: 40))
              let mask = CAShapeLayer()
              mask.path = path.cgPath
       viewCollBg.layer.mask = mask
       collView?.register(ThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-      self.view.backgroundColor = .clear
+      self.view.backgroundColor = #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95)//.clear
       self.view.clipsToBounds = false
       let aHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60))
-      let gradientLayer = CAGradientLayer()
-      gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 80)
-      gradientLayer.colors = [#colorLiteral(red: 0.1239051446, green: 0.1423194706, blue: 0.1881331503, alpha: 0).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.6296117114).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.7914678511).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95).cgColor]
-      gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0) // vertical gradient start
-         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-      aHeaderView.layer.insertSublayer(gradientLayer, at: 0)
+//      let gradientLayer = CAGradientLayer()
+//      gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 80)
+//      gradientLayer.colors = [#colorLiteral(red: 0.1239051446, green: 0.1423194706, blue: 0.1881331503, alpha: 0).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.6296117114).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.7914678511).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95).cgColor]
+//      gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0) // vertical gradient start
+//         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+//      aHeaderView.layer.insertSublayer(gradientLayer, at: 0)
 //      aView.backgroundColor = .red
       let aBtn = UIButton(frame: aHeaderView.frame)
       aBtn.setTitle("", for: .normal)
