@@ -54,14 +54,22 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       layout.itemSize = CGSize(width: screenWidth/3 - 8, height: screenWidth/3 - 8)
       layout.minimumInteritemSpacing = 4
       layout.minimumLineSpacing = 4
-      collView = UICollectionView(frame: CGRect(x: 0, y: 30, width: screenWidth, height: screenHeight - 30), collectionViewLayout: layout)
+      collView = UICollectionView(frame: CGRect(x: 0, y: 20, width: screenWidth, height: screenHeight - 20), collectionViewLayout: layout)
       collView?.delegate = self
       collView?.dataSource = self
       collView?.layer.cornerRadius = 40
       collView?.register(ThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
       self.view.backgroundColor = .clear
       self.view.clipsToBounds = false
-      
+      let aView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60))
+      let gradientLayer = CAGradientLayer()
+      gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 80)
+      gradientLayer.colors = [#colorLiteral(red: 0.1239051446, green: 0.1423194706, blue: 0.1881331503, alpha: 0).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.6484790525).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95).cgColor]
+      gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0) // vertical gradient start
+         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+      aView.layer.insertSublayer(gradientLayer, at: 0)
+//      aView.backgroundColor = .red
+      self.view.addSubview(aView)
       self.view.addSubview(collView!)
       addCloseButton()
 //      NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
