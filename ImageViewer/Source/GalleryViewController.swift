@@ -453,7 +453,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             thumbnailsController.closeButton = seeAllCloseButton
             thumbnailsController.closeLayout = closeLayout
         }
-       thumbnailsController.modalPresentationStyle = .overFullScreen
+       thumbnailsController.modalPresentationStyle = .overCurrentContext
+       thumbnailsController.modalTransitionStyle = .crossDissolve
         thumbnailsController.onItemSelected = { [weak self] index in
 
             self?.page(toIndex: index)

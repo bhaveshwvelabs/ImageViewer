@@ -74,16 +74,10 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
              mask.path = path.cgPath
       viewCollBg.layer.mask = mask
       collView?.register(ThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+      collView?.scrollIndicatorInsets = UIEdgeInsets(top: 80,left: 0,bottom: 20,right: 0)
       self.view.backgroundColor = #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95)//.clear
       self.view.clipsToBounds = false
       let aHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60))
-//      let gradientLayer = CAGradientLayer()
-//      gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 80)
-//      gradientLayer.colors = [#colorLiteral(red: 0.1239051446, green: 0.1423194706, blue: 0.1881331503, alpha: 0).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.6296117114).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.7914678511).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95).cgColor]
-//      gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0) // vertical gradient start
-//         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-//      aHeaderView.layer.insertSublayer(gradientLayer, at: 0)
-//      aView.backgroundColor = .red
       let aBtn = UIButton(frame: aHeaderView.frame)
       aBtn.setTitle("", for: .normal)
       aBtn.addTarget(self, action: #selector(close), for: .touchUpInside)
@@ -93,6 +87,16 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       self.view.addSubview(viewCollBg)
       addCloseButton()
 //      NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+      
+      /* View load(From bottom to identity) animation */
+      viewCollBg.transform = CGAffineTransform(translationX: 0, y: screenHeight)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//         viewCollBg.transform = CGAffineTransform(scaleX: 0, y: 0)
+         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.6, options: .curveEaseInOut, animations: {
+            viewCollBg.transform = .identity
+         }, completion: nil)
+      }
+      
    }
    
    func setupCollectionViewDataSource(itemsDataSource: GalleryItemsDataSource) {
@@ -116,7 +120,12 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
         }
 
         closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-
+       closeButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+       DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+          UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.6, options: .curveEaseInOut, animations: {
+             closeButton.transform = .identity
+          }, completion: nil)
+       }
         self.view.addSubview(closeButton)
     }
 
