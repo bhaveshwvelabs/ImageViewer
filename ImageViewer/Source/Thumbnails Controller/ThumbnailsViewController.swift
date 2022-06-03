@@ -57,13 +57,14 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       layout.itemSize = CGSize(width: screenWidth/3 - 8, height: screenWidth/3 - 8)
       layout.minimumInteritemSpacing = 4
       layout.minimumLineSpacing = 4
-      collView = UICollectionView(frame: CGRect(x: 0, y: 20, width: screenWidth, height: screenHeight - (20 + 40)), collectionViewLayout: layout)
+      let viewCollBg = UIView(frame: CGRect(x: 0, y: 20, width: screenWidth, height: self.view.frame.height))
+      collView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight - (20 + 40)), collectionViewLayout: layout)
       collView?.delegate = self
       collView?.dataSource = self
       let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight - (20 + 40)), byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 40, height: 40))
              let mask = CAShapeLayer()
              mask.path = path.cgPath
-      collView?.layer.mask = mask
+      viewCollBg.layer.mask = mask
       collView?.register(ThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
       self.view.backgroundColor = .clear
       self.view.clipsToBounds = false
@@ -76,10 +77,8 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       aView.layer.insertSublayer(gradientLayer, at: 0)
 //      aView.backgroundColor = .red
       self.view.addSubview(aView)
-      self.view.addSubview(collView!)
-      let aViewBottom = UIView(frame: CGRect(x: 0, y: collView?.frame.height ?? (screenHeight - (20 + 40)), width: self.view.frame.width, height: 60))
-      self.view.addSubview(aViewBottom)
-
+      viewCollBg.addSubviews(collView!)
+      self.view.addSubview(viewCollBg)
       addCloseButton()
 //      NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
    }
