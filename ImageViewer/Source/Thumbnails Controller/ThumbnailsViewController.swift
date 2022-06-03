@@ -71,7 +71,7 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       let aHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60))
       let gradientLayer = CAGradientLayer()
       gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 80)
-      gradientLayer.colors = [#colorLiteral(red: 0.1239051446, green: 0.1423194706, blue: 0.1881331503, alpha: 0).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.6484790525).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95).cgColor]
+      gradientLayer.colors = [#colorLiteral(red: 0.1239051446, green: 0.1423194706, blue: 0.1881331503, alpha: 0).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.6296117114).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.7914678511).cgColor, #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95).cgColor]
       gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0) // vertical gradient start
          gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
       aHeaderView.layer.insertSublayer(gradientLayer, at: 0)
