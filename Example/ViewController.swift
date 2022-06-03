@@ -97,7 +97,11 @@ class ViewController: UIViewController {
     }
 
     func galleryConfiguration() -> GalleryConfiguration {
-
+       let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+       btn.setImage(#imageLiteral(resourceName: "close_grey"), for: .normal)
+       btn.backgroundColor = .black
+       btn.clipsToBounds = true
+       btn.layer.cornerRadius = 5
         return [
 
             GalleryConfigurationItem.closeButtonMode(.builtIn),
@@ -143,7 +147,8 @@ class ViewController: UIViewController {
 
             GalleryConfigurationItem.statusBarHidden(true),
             GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
-            GalleryConfigurationItem.displacementInsetMargin(50)
+            GalleryConfigurationItem.displacementInsetMargin(50),
+            GalleryConfigurationItem.seeAllCloseButtonMode(.custom(btn))
         ]
     }
 }

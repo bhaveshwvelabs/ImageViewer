@@ -441,8 +441,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     @objc fileprivate func showThumbnails() {
 
-        let thumbnailsController = ThumbnailsViewController(itemsDataSource: self.itemsDataSource)
-
+        let thumbnailsController = ThumbnailsViewController()
+       thumbnailsController.setupCollectionViewDataSource(itemsDataSource: self.itemsDataSource)
         if let closeButton = seeAllCloseButton {
             thumbnailsController.closeButton = closeButton
             thumbnailsController.closeLayout = seeAllCloseLayout

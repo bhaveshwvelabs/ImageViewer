@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThumbnailsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationBarDelegate {
+class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLayout, UINavigationBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
 
     fileprivate let reuseIdentifier = "ThumbnailCell"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
@@ -16,22 +16,11 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
     fileprivate let rotationAnimationDuration = 0.2
 
     var onItemSelected: ((Int) -> Void)?
+   var collView: UICollectionView?
     let layout = UICollectionViewFlowLayout()
     weak var itemsDataSource: GalleryItemsDataSource!
     var closeButton: UIButton?
     var closeLayout: ButtonLayout?
-
-    required init(itemsDataSource: GalleryItemsDataSource) {
-        self.itemsDataSource = itemsDataSource
-
-        super.init(collectionViewLayout: layout)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -57,19 +46,32 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let screenWidth = self.view.frame.width
-        layout.sectionInset = UIEdgeInsets(top: 50, left: 8, bottom: 8, right: 8)
-        layout.itemSize = CGSize(width: screenWidth/3 - 8, height: screenWidth/3 - 8)
-        layout.minimumInteritemSpacing = 4
-        layout.minimumLineSpacing = 4
-
-        self.collectionView?.register(ThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        addCloseButton()
-    }
+   override func viewDidLoad() {
+      super.viewDidLoad()
+      let screenWidth = self.view.frame.width
+      let screenHeight = self.view.frame.height
+      layout.sectionInset = UIEdgeInsets(top: 50, left: 8, bottom: 8, right: 8)
+      layout.itemSize = CGSize(width: screenWidth/3 - 8, height: screenWidth/3 - 8)
+      layout.minimumInteritemSpacing = 4
+      layout.minimumLineSpacing = 4
+      collView = UICollectionView(frame: CGRect(x: 0, y: 30, width: screenWidth, height: screenHeight), collectionViewLayout: layout)
+      collView?.delegate = self
+      collView?.dataSource = self
+      collView?.layer.cornerRadius = 40
+      collView?.register(ThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+      self.view.backgroundColor = .clear
+      self.view.clipsToBounds = false
+      
+      self.view.addSubview(collView!)
+      addCloseButton()
+//      NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
+   }
+   
+   func setupCollectionViewDataSource(itemsDataSource: GalleryItemsDataSource) {
+      self.itemsDataSource = itemsDataSource
+      collView?.collectionViewLayout = layout
+      collView?.reloadData()
+   }
 
     fileprivate func addCloseButton() {
         guard let closeButton = closeButton, let closeLayout = closeLayout else { return }
@@ -94,11 +96,12 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
         self.dismiss(animated: true, completion: nil)
     }
 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return itemsDataSource.itemCount()
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+   
+   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ThumbnailCell
 
@@ -140,7 +143,7 @@ class ThumbnailsViewController: UICollectionViewController, UICollectionViewDele
         return cell
     }
 
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         onItemSelected?((indexPath as NSIndexPath).row)
         close()
     }
