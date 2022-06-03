@@ -77,21 +77,18 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       collView?.scrollIndicatorInsets = UIEdgeInsets(top: 80,left: 0,bottom: 20,right: 0)
       self.view.backgroundColor = #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95)//.clear
       self.view.clipsToBounds = false
-      let aHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60))
-      let aBtn = UIButton(frame: aHeaderView.frame)
-      aBtn.setTitle("", for: .normal)
-      aBtn.addTarget(self, action: #selector(close), for: .touchUpInside)
-      aHeaderView.addSubview(aBtn)
-      self.view.addSubview(aHeaderView)
+      let aBtnHeader = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 75))
+      aBtnHeader.setTitle("", for: .normal)
+      aBtnHeader.addTarget(self, action: #selector(close), for: .touchUpInside)
       viewCollBg.addSubviews(collView!)
       self.view.addSubview(viewCollBg)
+      self.view.addSubview(aBtnHeader)
       addCloseButton()
 //      NotificationCenter.default.addObserver(self, selector: #selector(rotate), name: UIDevice.orientationDidChangeNotification, object: nil)
       
       /* View load(From bottom to identity) animation */
-      viewCollBg.transform = CGAffineTransform(translationX: 0, y: screenHeight)
+      viewCollBg.transform = CGAffineTransform(translationX: 0, y: screenHeight).scaledBy(x: 0, y: 0)
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-//         viewCollBg.transform = CGAffineTransform(scaleX: 0, y: 0)
          UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.6, options: .curveEaseInOut, animations: {
             viewCollBg.transform = .identity
          }, completion: nil)
