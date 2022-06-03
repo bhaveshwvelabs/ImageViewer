@@ -54,7 +54,7 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       layout.itemSize = CGSize(width: screenWidth/3 - 8, height: screenWidth/3 - 8)
       layout.minimumInteritemSpacing = 4
       layout.minimumLineSpacing = 4
-      collView = UICollectionView(frame: CGRect(x: 0, y: 30, width: screenWidth, height: screenHeight), collectionViewLayout: layout)
+      collView = UICollectionView(frame: CGRect(x: 0, y: 30, width: screenWidth, height: screenHeight - 30), collectionViewLayout: layout)
       collView?.delegate = self
       collView?.dataSource = self
       collView?.layer.cornerRadius = 40
