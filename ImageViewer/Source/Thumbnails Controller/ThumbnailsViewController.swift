@@ -52,28 +52,29 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
           let bottomSafeArea: CGFloat
           if #available(iOS 11.0, *) {
              topSafeArea = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 44
-             bottomSafeArea = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? view.safeAreaInsets.bottom
+             bottomSafeArea = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
           } else {
               topSafeArea = topLayoutGuide.length
               bottomSafeArea = bottomLayoutGuide.length
           }
       let screenWidth = self.view.frame.width
-      let screenHeight = self.view.frame.height - (topSafeArea + bottomSafeArea)
+      let screenHeight = self.view.frame.height - (topSafeArea + 20 + bottomSafeArea)
 
       layout.sectionInset = UIEdgeInsets(top: 50, left: 8, bottom: 8, right: 8)
       layout.itemSize = CGSize(width: screenWidth/3 - 8, height: screenWidth/3 - 8)
       layout.minimumInteritemSpacing = 4
       layout.minimumLineSpacing = 4
    
-      let viewCollBg = UIView(frame: CGRect(x: 0, y: topSafeArea, width: screenWidth, height: self.view.frame.height - topSafeArea))
-      viewCollBg.layoutSubviews()
-      collView = UICollectionView(frame: CGRect(x: 0, y: topSafeArea, width: screenWidth, height: self.view.frame.height - (topSafeArea)), collectionViewLayout: layout)
+      let viewCollBg = UIView(frame: CGRect(x: 0, y: topSafeArea + 20, width: screenWidth, height: self.view.frame.height - topSafeArea))
+//      viewCollBg.layoutSubviews()
+      collView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: self.view.frame.height - (topSafeArea)), collectionViewLayout: layout)
       collView?.delegate = self
       collView?.dataSource = self
-      let path = UIBezierPath(roundedRect: viewCollBg.frame, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 40, height: 40))
-             let mask = CAShapeLayer()
-             mask.path = path.cgPath
-      viewCollBg.layer.mask = mask
+//      let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: screenWidth, height: self.view.frame.height - topSafeArea), byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 40, height: 40))
+//             let mask = CAShapeLayer()
+//             mask.path = path.cgPath
+//      viewCollBg.layer.mask = mask
+      viewCollBg.round(corners: [.topLeft, .topRight], radius: 40)
       collView?.register(ThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
       collView?.scrollIndicatorInsets = UIEdgeInsets(top: 80,left: 0,bottom: 20,right: 0)
       self.view.backgroundColor = #colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95)//.clear
@@ -182,4 +183,14 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
         onItemSelected?((indexPath as NSIndexPath).row)
         close()
     }
+}
+extension UIView {
+  func round(corners: UIRectCorner, radius: CGFloat) {
+     DispatchQueue.main.async {
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
+     }
+  }
 }
