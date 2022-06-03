@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let imageViews = [image1, image2, image3, image4, image5, image6, image7]
+        let imageViews = [image1, image2, image3, image4, image5, image6, image7, image1, image2, image3, image4, image5, image6, image7, image1, image2, image3, image4, image5, image6, image7, image1, image2, image3, image4, image5, image6, image7]
 
         for (index, imageView) in imageViews.enumerated() {
 

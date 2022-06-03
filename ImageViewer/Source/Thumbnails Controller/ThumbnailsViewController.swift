@@ -51,8 +51,8 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
           let topSafeArea: CGFloat
           let bottomSafeArea: CGFloat
           if #available(iOS 11.0, *) {
-              topSafeArea = view.safeAreaInsets.top
-              bottomSafeArea = view.safeAreaInsets.bottom
+             topSafeArea = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 44
+             bottomSafeArea = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? view.safeAreaInsets.bottom
           } else {
               topSafeArea = topLayoutGuide.length
               bottomSafeArea = bottomLayoutGuide.length
@@ -65,8 +65,9 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       layout.minimumInteritemSpacing = 4
       layout.minimumLineSpacing = 4
    
-      let viewCollBg = UIView(frame: CGRect(x: 0, y: topSafeArea + 20, width: screenWidth, height: self.view.frame.height - topSafeArea))
-      collView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight - 20), collectionViewLayout: layout)
+      let viewCollBg = UIView(frame: CGRect(x: 0, y: topSafeArea, width: screenWidth, height: self.view.frame.height - topSafeArea))
+      viewCollBg.layoutSubviews()
+      collView = UICollectionView(frame: CGRect(x: 0, y: topSafeArea, width: screenWidth, height: self.view.frame.height - (topSafeArea)), collectionViewLayout: layout)
       collView?.delegate = self
       collView?.dataSource = self
       let path = UIBezierPath(roundedRect: viewCollBg.frame, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 40, height: 40))
