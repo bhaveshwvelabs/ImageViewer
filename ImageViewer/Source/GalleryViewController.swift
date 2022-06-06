@@ -57,7 +57,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var highlightedBgViewRadius: CGFloat? = 10
     fileprivate var highlightedBgViewCorners: UIRectCorner? = [.topLeft, .topRight]
     fileprivate var thumbnailsScreenBackgroundColor: UIColor = .black.withAlphaComponent(0.75)
-    fileprivate var enableRotation = false
+    fileprivate var thumbnailsScreenEnableRotation = false
     fileprivate var highlightedBgViewTopSpacing: CGFloat = 0
 
     /// COMPLETION BLOCKS
@@ -87,38 +87,38 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
             switch item {
 
-            case .imageDividerWidth(let width):                 spineDividerWidth = Float(width)
-            case .pagingMode(let mode):                         galleryPagingMode = mode
-            case .headerViewLayout(let layout):                 headerLayout = layout
-            case .footerViewLayout(let layout):                 footerLayout = layout
-            case .closeLayout(let layout):                      closeLayout = layout
-            case .deleteLayout(let layout):                     deleteLayout = layout
-            case .thumbnailsLayout(let layout):                 thumbnailsLayout = layout
-            case .statusBarHidden(let hidden):                  statusBarHidden = hidden
-            case .hideDecorationViewsOnLaunch(let hidden):      decorationViewsHidden = hidden
-            case .decorationViewsFadeDuration(let duration):    decorationViewsFadeDuration = duration
-            case .rotationDuration(let duration):               rotationDuration = duration
-            case .rotationMode(let mode):                       rotationMode = mode
-            case .overlayColor(let color):                      overlayView.overlayColor = color
-            case .overlayBlurStyle(let style):                  overlayView.blurringView.effect = UIBlurEffect(style: style)
-            case .overlayBlurOpacity(let opacity):              overlayView.blurTargetOpacity = opacity
-            case .overlayColorOpacity(let opacity):             overlayView.colorTargetOpacity = opacity
-            case .blurPresentDuration(let duration):            overlayView.blurPresentDuration = duration
-            case .blurPresentDelay(let delay):                  overlayView.blurPresentDelay = delay
-            case .colorPresentDuration(let duration):           overlayView.colorPresentDuration = duration
-            case .colorPresentDelay(let delay):                 overlayView.colorPresentDelay = delay
-            case .blurDismissDuration(let duration):            overlayView.blurDismissDuration = duration
-            case .blurDismissDelay(let delay):                  overlayView.blurDismissDelay = delay
-            case .colorDismissDuration(let duration):           overlayView.colorDismissDuration = duration
-            case .colorDismissDelay(let delay):                 overlayView.colorDismissDelay = delay
-            case .continuePlayVideoOnEnd(let enabled):          continueNextVideoOnFinish = enabled
-            case .seeAllCloseLayout(let layout):                seeAllCloseLayout = layout
-            case .videoControlsColor(let color):                scrubber.tintColor = color
-            case .highlightedBgViewRadius(let radius):          highlightedBgViewRadius = radius
-            case .highlightedBgViewCorners(let corners):        highlightedBgViewCorners = corners
-            case .thumbnailsScreenBackgroundColor(let color):   thumbnailsScreenBackgroundColor = color
-            case .enableRotation(let canRotate):                enableRotation = canRotate
-            case .highlightedBgViewTopSpacing(let spacing):     highlightedBgViewTopSpacing = spacing
+            case .imageDividerWidth(let width):                  spineDividerWidth = Float(width)
+            case .pagingMode(let mode):                          galleryPagingMode = mode
+            case .headerViewLayout(let layout):                  headerLayout = layout
+            case .footerViewLayout(let layout):                  footerLayout = layout
+            case .closeLayout(let layout):                       closeLayout = layout
+            case .deleteLayout(let layout):                      deleteLayout = layout
+            case .thumbnailsLayout(let layout):                  thumbnailsLayout = layout
+            case .statusBarHidden(let hidden):                   statusBarHidden = hidden
+            case .hideDecorationViewsOnLaunch(let hidden):       decorationViewsHidden = hidden
+            case .decorationViewsFadeDuration(let duration):     decorationViewsFadeDuration = duration
+            case .rotationDuration(let duration):                rotationDuration = duration
+            case .rotationMode(let mode):                        rotationMode = mode
+            case .overlayColor(let color):                       overlayView.overlayColor = color
+            case .overlayBlurStyle(let style):                   overlayView.blurringView.effect = UIBlurEffect(style: style)
+            case .overlayBlurOpacity(let opacity):               overlayView.blurTargetOpacity = opacity
+            case .overlayColorOpacity(let opacity):              overlayView.colorTargetOpacity = opacity
+            case .blurPresentDuration(let duration):             overlayView.blurPresentDuration = duration
+            case .blurPresentDelay(let delay):                   overlayView.blurPresentDelay = delay
+            case .colorPresentDuration(let duration):            overlayView.colorPresentDuration = duration
+            case .colorPresentDelay(let delay):                  overlayView.colorPresentDelay = delay
+            case .blurDismissDuration(let duration):             overlayView.blurDismissDuration = duration
+            case .blurDismissDelay(let delay):                   overlayView.blurDismissDelay = delay
+            case .colorDismissDuration(let duration):            overlayView.colorDismissDuration = duration
+            case .colorDismissDelay(let delay):                  overlayView.colorDismissDelay = delay
+            case .continuePlayVideoOnEnd(let enabled):           continueNextVideoOnFinish = enabled
+            case .seeAllCloseLayout(let layout):                 seeAllCloseLayout = layout
+            case .videoControlsColor(let color):                 scrubber.tintColor = color
+            case .highlightedBgViewRadius(let radius):           highlightedBgViewRadius = radius
+            case .highlightedBgViewCorners(let corners):         highlightedBgViewCorners = corners
+            case .thumbnailsScreenBackgroundColor(let color):    thumbnailsScreenBackgroundColor = color
+            case .thumbnailsScreenEnableRotation(let canRotate): thumbnailsScreenEnableRotation = canRotate
+            case .highlightedBgViewTopSpacing(let spacing):      highlightedBgViewTopSpacing = spacing
             case .closeButtonMode(let buttonMode):
 
                 switch buttonMode {
@@ -474,7 +474,7 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
        thumbnailsController.highlightedBgViewRadius = highlightedBgViewRadius
        thumbnailsController.highlightedBgViewCorners = highlightedBgViewCorners
        thumbnailsController.thumbnailsScreenBackgroundColor = thumbnailsScreenBackgroundColor
-       thumbnailsController.enableRotation = enableRotation
+       thumbnailsController.enableRotation = thumbnailsScreenEnableRotation
        thumbnailsController.highlightedBgViewTopSpacing = highlightedBgViewTopSpacing
        
        present(thumbnailsController, animated: true, completion: nil)

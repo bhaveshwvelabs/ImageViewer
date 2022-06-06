@@ -169,7 +169,7 @@ public enum GalleryConfigurationItem {
    case thumbnailsScreenBackgroundColor(UIColor)
    
    ///Thumbnails screen rotation on/off
-   case enableRotation(Bool)
+   case thumbnailsScreenEnableRotation(Bool)
    
    ///Thumbnails screen highlighted background view top spacing
    case highlightedBgViewTopSpacing(CGFloat)
