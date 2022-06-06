@@ -158,6 +158,21 @@ public enum GalleryConfigurationItem {
 
     ///Tint color of video controls
     case videoControlsColor(UIColor)
+   
+   ///Thumbnails screen highlighted background view radius
+   case highlightedBgViewRadius(CGFloat)
+   
+   ///Thumbnails screen highlighted background view custom corners
+   case highlightedBgViewCorners(UIRectCorner)
+   
+   ///Thumbnails screen highlighted background view color
+   case thumbnailsScreenBackgroundColor(UIColor)
+   
+   ///Thumbnails screen rotation on/off
+   case enableRotation(Bool)
+   
+   ///Thumbnails screen highlighted background view top spacing
+   case highlightedBgViewTopSpacing(CGFloat)
 }
 
 public enum GalleryRotationMode {

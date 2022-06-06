@@ -54,6 +54,12 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate let swipeToDismissFadeOutAccelerationFactor: CGFloat = 6
     fileprivate var decorationViewsFadeDuration = 0.15
 
+    fileprivate var highlightedBgViewRadius: CGFloat? = 10
+    fileprivate var highlightedBgViewCorners: UIRectCorner? = [.topLeft, .topRight]
+    fileprivate var thumbnailsScreenBackgroundColor: UIColor = .black.withAlphaComponent(0.75)
+    fileprivate var enableRotation = false
+    fileprivate var highlightedBgViewTopSpacing: CGFloat = 0
+
     /// COMPLETION BLOCKS
     /// If set, the block is executed right after the initial launch animations finish.
     open var launchedCompletion: (() -> Void)?
@@ -108,6 +114,11 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             case .continuePlayVideoOnEnd(let enabled):          continueNextVideoOnFinish = enabled
             case .seeAllCloseLayout(let layout):                seeAllCloseLayout = layout
             case .videoControlsColor(let color):                scrubber.tintColor = color
+            case .highlightedBgViewRadius(let radius):          highlightedBgViewRadius = radius
+            case .highlightedBgViewCorners(let corners):        highlightedBgViewCorners = corners
+            case .thumbnailsScreenBackgroundColor(let color):   thumbnailsScreenBackgroundColor = color
+            case .enableRotation(let canRotate):                enableRotation = canRotate
+            case .highlightedBgViewTopSpacing(let spacing):     highlightedBgViewTopSpacing = spacing
             case .closeButtonMode(let buttonMode):
 
                 switch buttonMode {
@@ -439,29 +450,35 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
 
     //ThumbnailsimageBlock
 
-    @objc fileprivate func showThumbnails() {
-
-        let thumbnailsController = ThumbnailsViewController()
+   @objc fileprivate func showThumbnails() {
+      
+       let thumbnailsController = ThumbnailsViewController()
        thumbnailsController.setupCollectionViewDataSource(itemsDataSource: self.itemsDataSource)
-        if let closeButton = seeAllCloseButton {
-            thumbnailsController.closeButton = closeButton
-            thumbnailsController.closeLayout = seeAllCloseLayout
-        } else if let closeButton = closeButton {
-            let seeAllCloseButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: closeButton.bounds.size))
-            seeAllCloseButton.setImage(closeButton.image(for: UIControl.State()), for: UIControl.State())
-            seeAllCloseButton.setImage(closeButton.image(for: .highlighted), for: .highlighted)
-            thumbnailsController.closeButton = seeAllCloseButton
-            thumbnailsController.closeLayout = closeLayout
-        }
+       if let closeButton = seeAllCloseButton {
+          thumbnailsController.closeButton = closeButton
+          thumbnailsController.closeLayout = seeAllCloseLayout
+       } else if let closeButton = closeButton {
+          let seeAllCloseButton = UIButton(frame: CGRect(origin: CGPoint.zero, size: closeButton.bounds.size))
+          seeAllCloseButton.setImage(closeButton.image(for: UIControl.State()), for: UIControl.State())
+          seeAllCloseButton.setImage(closeButton.image(for: .highlighted), for: .highlighted)
+          thumbnailsController.closeButton = seeAllCloseButton
+          thumbnailsController.closeLayout = closeLayout
+       }
        thumbnailsController.modalPresentationStyle = .overCurrentContext
        thumbnailsController.modalTransitionStyle = .crossDissolve
-        thumbnailsController.onItemSelected = { [weak self] index in
-
-            self?.page(toIndex: index)
-        }
-
-        present(thumbnailsController, animated: true, completion: nil)
-    }
+       thumbnailsController.onItemSelected = { [weak self] index in
+         
+          self?.page(toIndex: index)
+       }
+      
+       thumbnailsController.highlightedBgViewRadius = highlightedBgViewRadius
+       thumbnailsController.highlightedBgViewCorners = highlightedBgViewCorners
+       thumbnailsController.thumbnailsScreenBackgroundColor = thumbnailsScreenBackgroundColor
+       thumbnailsController.enableRotation = enableRotation
+       thumbnailsController.highlightedBgViewTopSpacing = highlightedBgViewTopSpacing
+       
+       present(thumbnailsController, animated: true, completion: nil)
+   }
 
     open func page(toIndex index: Int) {
 
