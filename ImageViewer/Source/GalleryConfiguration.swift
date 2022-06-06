@@ -166,6 +166,9 @@ public enum GalleryConfigurationItem {
    case highlightedBgViewCorners(UIRectCorner)
    
    ///Thumbnails screen highlighted background view color
+   case thumbnailsScreenHighlightedViewBackgroundColor(UIColor)
+   
+   ///Thumbnails screen  background view color
    case thumbnailsScreenBackgroundColor(UIColor)
    
    ///Thumbnails screen rotation on/off
@@ -173,6 +176,9 @@ public enum GalleryConfigurationItem {
    
    ///Thumbnails screen highlighted background view top spacing
    case highlightedBgViewTopSpacing(CGFloat)
+   
+   ///Thumbnails screen highlighted shows scroll indicator
+   case thumbnailsScreenShowsScrollIndicator(Bool)
 }
 
 public enum GalleryRotationMode {

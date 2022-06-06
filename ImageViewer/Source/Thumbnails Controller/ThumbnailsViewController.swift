@@ -26,6 +26,10 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
    var thumbnailsScreenBackgroundColor: UIColor = .black.withAlphaComponent(0.75)
    var enableRotation = false
    var highlightedBgViewTopSpacing: CGFloat = 0
+   var highlightedBgView = UIView()
+   var headerBgButton = UIButton()
+   var thumbnailsScreenHighlightedViewBackgroundColor: UIColor? = .white
+   var isShowScrollIndicator = true
 
    deinit {
       NotificationCenter.default.removeObserver(self)
@@ -38,17 +42,42 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
                isAnimating == false else { return }
       
       isAnimating = true
-      
       UIView.animate(withDuration: rotationAnimationDuration, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: { [weak self] () -> Void in
          self?.view.transform = windowRotationTransform()
          self?.view.bounds = rotationAdjustedBounds()
          self?.view.setNeedsLayout()
          self?.view.layoutIfNeeded()
-         
+         self?.manageFreams()
       })
       { [weak self] finished  in
          self?.isAnimating = false
       }
+   }
+   
+   func manageFreams() {
+      let topSafeArea: CGFloat
+      if #available(iOS 11.0, *) {
+         topSafeArea = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 44
+      } else {
+         topSafeArea = topLayoutGuide.length
+      }
+      
+      let highlightedBgViewSize = highlightedBgView.frame.size
+      let collViewSize = collView?.frame.size ?? .zero
+      let headerBgButtonSize = headerBgButton.frame.size
+      
+      if (UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight) && highlightedBgViewSize.height > highlightedBgViewSize.width {
+         highlightedBgView.frame.size = highlightedBgView.frame.size.inverted()
+         collView?.frame.size = collViewSize.inverted()
+         headerBgButton.frame.size = headerBgButton.frame.size.inverted()
+         highlightedBgView.frame.origin = CGPoint(x: topSafeArea, y: highlightedBgViewTopSpacing)
+      } else {
+         highlightedBgView.frame.size = CGSize(width: min(highlightedBgViewSize.width, highlightedBgViewSize.height), height: max(highlightedBgViewSize.width, highlightedBgViewSize.height))
+         collView?.frame.size = CGSize(width: min(collViewSize.width, collViewSize.height), height: max(collViewSize.width, collViewSize.height))
+         headerBgButton.frame.size = CGSize(width: min(headerBgButtonSize.width, headerBgButtonSize.height), height: max(headerBgButtonSize.width, headerBgButtonSize.height))
+         highlightedBgView.frame.origin = CGPoint(x: 0, y: topSafeArea + highlightedBgViewTopSpacing)
+      }
+      highlightedBgView.round(corners: self.highlightedBgViewCorners ?? [], radius: self.highlightedBgViewRadius ?? 0)
    }
    
    override func viewDidLoad() {
@@ -73,16 +102,20 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       self.view.backgroundColor = thumbnailsScreenBackgroundColor
       self.view.clipsToBounds = false
       
-      let highlightedBgView = UIView(frame: CGRect(x: 0, y: topSafeArea + highlightedBgViewTopSpacing, width: screenWidth, height: self.view.frame.height - topSafeArea))
+      highlightedBgView.frame = CGRect(x: 0, y: topSafeArea + highlightedBgViewTopSpacing, width: screenWidth, height: self.view.frame.height - (topSafeArea + highlightedBgViewTopSpacing))
       highlightedBgView.round(corners: highlightedBgViewCorners ?? [], radius: highlightedBgViewRadius ?? 0)
+      highlightedBgView.backgroundColor = thumbnailsScreenHighlightedViewBackgroundColor
       
       collView = UICollectionView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: self.view.frame.height - (topSafeArea)), collectionViewLayout: layout)
       collView?.delegate = self
       collView?.dataSource = self
       collView?.register(ThumbnailCell.self, forCellWithReuseIdentifier: reuseIdentifier)
       collView?.scrollIndicatorInsets = UIEdgeInsets(top: 80,left: 0,bottom: 20,right: 0)
-      
-      let headerBgButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 55 + highlightedBgViewTopSpacing))
+      collView?.backgroundColor = .clear
+      collView?.showsVerticalScrollIndicator = isShowScrollIndicator
+      collView?.showsHorizontalScrollIndicator = isShowScrollIndicator
+
+      headerBgButton = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 55 + highlightedBgViewTopSpacing))
       headerBgButton.setTitle("", for: .normal)
       headerBgButton.addTarget(self, action: #selector(close), for: .touchUpInside)
       
@@ -99,7 +132,7 @@ class ThumbnailsViewController: UIViewController, UICollectionViewDelegateFlowLa
       highlightedBgView.transform = CGAffineTransform(translationX: 0, y: screenHeight).scaledBy(x: 0, y: 0)
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
          UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.6, options: .curveEaseInOut, animations: {
-            highlightedBgView.transform = .identity
+            self.highlightedBgView.transform = .identity
          }, completion: nil)
       }
    }

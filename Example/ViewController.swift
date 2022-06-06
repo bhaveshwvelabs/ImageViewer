@@ -148,7 +148,15 @@ class ViewController: UIViewController {
             GalleryConfigurationItem.statusBarHidden(true),
             GalleryConfigurationItem.displacementKeepOriginalInPlace(false),
             GalleryConfigurationItem.displacementInsetMargin(50),
-            GalleryConfigurationItem.seeAllCloseButtonMode(.custom(btn))
+            GalleryConfigurationItem.seeAllCloseButtonMode(.custom(btn)),
+            GalleryConfigurationItem.highlightedBgViewRadius(40),
+            GalleryConfigurationItem.highlightedBgViewCorners([.topLeft, .topRight]),
+            GalleryConfigurationItem.highlightedBgViewTopSpacing(20),
+            GalleryConfigurationItem.thumbnailsScreenBackgroundColor(#colorLiteral(red: 0.09411764706, green: 0.1058823529, blue: 0.1411764706, alpha: 0.95)),
+            GalleryConfigurationItem.seeAllCloseLayout(.pinRight(20, 20)),
+            GalleryConfigurationItem.thumbnailsScreenHighlightedViewBackgroundColor(#colorLiteral(red: 1, green: 0.9999999404, blue: 0.9999999404, alpha: 1)),
+//            GalleryConfigurationItem.thumbnailsScreenEnableRotation(true),
+            GalleryConfigurationItem.thumbnailsScreenShowsScrollIndicator(false),
         ]
     }
 }

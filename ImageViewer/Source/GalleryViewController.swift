@@ -59,6 +59,8 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
     fileprivate var thumbnailsScreenBackgroundColor: UIColor = .black.withAlphaComponent(0.75)
     fileprivate var thumbnailsScreenEnableRotation = false
     fileprivate var highlightedBgViewTopSpacing: CGFloat = 0
+    fileprivate var thumbnailsScreenHighlightedViewBackgroundColor: UIColor = .white
+    fileprivate var thumbnailsScreenShowsScrollIndicator = false
 
     /// COMPLETION BLOCKS
     /// If set, the block is executed right after the initial launch animations finish.
@@ -117,8 +119,10 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
             case .highlightedBgViewRadius(let radius):           highlightedBgViewRadius = radius
             case .highlightedBgViewCorners(let corners):         highlightedBgViewCorners = corners
             case .thumbnailsScreenBackgroundColor(let color):    thumbnailsScreenBackgroundColor = color
+            case .thumbnailsScreenHighlightedViewBackgroundColor(let color):    thumbnailsScreenHighlightedViewBackgroundColor = color
             case .thumbnailsScreenEnableRotation(let canRotate): thumbnailsScreenEnableRotation = canRotate
             case .highlightedBgViewTopSpacing(let spacing):      highlightedBgViewTopSpacing = spacing
+            case .thumbnailsScreenShowsScrollIndicator(let isShow): thumbnailsScreenShowsScrollIndicator = isShow
             case .closeButtonMode(let buttonMode):
 
                 switch buttonMode {
@@ -476,7 +480,9 @@ open class GalleryViewController: UIPageViewController, ItemControllerDelegate {
        thumbnailsController.thumbnailsScreenBackgroundColor = thumbnailsScreenBackgroundColor
        thumbnailsController.enableRotation = thumbnailsScreenEnableRotation
        thumbnailsController.highlightedBgViewTopSpacing = highlightedBgViewTopSpacing
-       
+       thumbnailsController.thumbnailsScreenHighlightedViewBackgroundColor = thumbnailsScreenHighlightedViewBackgroundColor
+       thumbnailsController.isShowScrollIndicator = thumbnailsScreenShowsScrollIndicator
+      
        present(thumbnailsController, animated: true, completion: nil)
    }
 
